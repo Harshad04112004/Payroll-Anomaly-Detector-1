@@ -1,0 +1,112 @@
+[
+  {
+    "id": "RULE-01",
+    "name": "Negative Net Pay",
+    "category": "Starter",
+    "fields": ["net_pay"],
+    "condition": "net_pay < 0",
+    "expected_formula": "net_pay >= 0",
+    "severity": "Critical",
+    "message": "Net pay cannot be negative.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-02",
+    "name": "Excessive Overtime Hours",
+    "category": "Starter",
+    "fields": ["overtime_hours"],
+    "condition": "overtime_hours > 80",
+    "expected_formula": "80",
+    "severity": "High",
+    "message": "Monthly overtime cannot exceed 80 hours.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-03",
+    "name": "Negative Leave Balance Breach",
+    "category": "Starter",
+    "fields": ["leave_balance"],
+    "condition": "leave_balance < -2",
+    "expected_formula": "-2.0",
+    "severity": "Medium",
+    "message": "Leave balance cannot drop below -2 days.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-04",
+    "name": "PF Deduction Mismatch (12% of Basic)",
+    "category": "Starter",
+    "fields": ["pf_deduction", "basic_pay"],
+    "condition": "abs(pf_deduction - round(basic_pay * 0.12, 2)) > 1.0",
+    "expected_formula": "round(basic_pay * 0.12, 2)",
+    "severity": "High",
+    "message": "PF deduction must equal 12% of basic pay.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-05",
+    "name": "Net Pay Reconciliation Mismatch",
+    "category": "Starter",
+    "fields": ["net_pay", "gross_pay", "pf_deduction", "tax_other_deductions"],
+    "condition": "abs(net_pay - round(gross_pay - pf_deduction - tax_other_deductions, 2)) > 1.0",
+    "expected_formula": "round(gross_pay - pf_deduction - tax_other_deductions, 2)",
+    "severity": "Critical",
+    "message": "Net pay does not equal Gross Pay minus PF and Tax/Other deductions.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-06",
+    "name": "Excessive Regular Working Hours",
+    "category": "Starter",
+    "fields": ["hours_worked"],
+    "condition": "hours_worked > 220",
+    "expected_formula": "220",
+    "severity": "Medium",
+    "message": "Regular monthly hours worked cannot exceed 220 hours.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-07",
+    "name": "Duplicate Bank Account (Ghost/Fraud Check)",
+    "category": "Custom",
+    "fields": ["bank_account"],
+    "condition": "is_duplicate_bank_account == True",
+    "expected_formula": "'Unique Account'",
+    "severity": "Critical",
+    "message": "Multiple employees share the same bank account number.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-08",
+    "name": "Inactive or Terminated Employee Paid",
+    "category": "Custom",
+    "fields": ["status", "net_pay"],
+    "condition": "status != 'Active' and net_pay > 0",
+    "expected_formula": "'Active'",
+    "severity": "Critical",
+    "message": "Employee status is not Active but positive net pay is scheduled.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-09",
+    "name": "Allowances Exceed 100% of Basic Pay",
+    "category": "Custom",
+    "fields": ["allowances", "basic_pay"],
+    "condition": "allowances > basic_pay",
+    "expected_formula": "basic_pay",
+    "severity": "Medium",
+    "message": "Total allowances exceed 100% of basic pay.",
+    "enabled": true
+  },
+  {
+    "id": "RULE-10",
+    "name": "Zero or Negative Basic Pay",
+    "category": "Custom",
+    "fields": ["basic_pay"],
+    "condition": "basic_pay <= 0",
+    "expected_formula": "> 0",
+    "severity": "Critical",
+    "message": "Basic pay must be strictly greater than zero.",
+    "enabled": true
+  }
+]
